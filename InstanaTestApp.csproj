@@ -12,17 +12,19 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <RootNamespace>InstanaTestApp</RootNamespace>
     <AssemblyName>InstanaTestApp</AssemblyName>
-    <!-- OutputPath fijo: evita el error MSB5023 cuando se compila sin .sln -->
     <OutputPath>bin\</OutputPath>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
+    <!-- Suprimir warning de arquitectura MSIL vs x86 — inofensivo en pruebas -->
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -46,10 +48,6 @@
     <Content Include="call.aspx" />
   </ItemGroup>
 
-  <!--
-    Import al final: garantiza que Configuration/Platform/OutputPath
-    ya esten definidos cuando CSharp.targets los necesite.
-  -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
 </Project>
