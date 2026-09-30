@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build"
+<Project ToolsVersion="14.0" DefaultTargets="Build"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft\VisualStudio\v17.0\WebApplications\Microsoft.WebApplication.targets"
-          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft\VisualStudio\v17.0\WebApplications\Microsoft.WebApplication.targets')" />
+  <!--
+    Usa Microsoft.CSharp.targets en lugar de Microsoft.WebApplication.targets
+    para que compile correctamente con solo MSBuild / .NET Framework,
+    sin necesidad de Visual Studio instalado.
+    IIS compila los .aspx en tiempo de ejecucion (compilacion dinamica).
+  -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -11,13 +16,10 @@
     <ProductVersion>8.0.30319</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
     <RootNamespace>InstanaTestApp</RootNamespace>
     <AssemblyName>InstanaTestApp</AssemblyName>
-    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -38,36 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
 
+  <!-- Code-behind: se compilan a InstanaTestApp.dll en bin\ -->
   <ItemGroup>
-    <Content Include="web.config" />
-    <Content Include="Default.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="health.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="call.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="Global.asax" />
+    <Compile Include="Global.asax.cs" />
+    <Compile Include="Default.aspx.cs" />
+    <Compile Include="health.aspx.cs" />
+    <Compile Include="call.aspx.cs" />
   </ItemGroup>
 
+  <!-- Contenido estatico: se copian tal cual al publicar -->
   <ItemGroup>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="health.aspx.cs">
-      <DependentUpon>health.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="call.aspx.cs">
-      <DependentUpon>call.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
+    <Content Include="web.config" />
+    <Content Include="Global.asax" />
+    <Content Include="Default.aspx" />
+    <Content Include="health.aspx" />
+    <Content Include="call.aspx" />
   </ItemGroup>
 
 </Project>
