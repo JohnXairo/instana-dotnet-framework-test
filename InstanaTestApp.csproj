@@ -2,14 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!--
-    Usa Microsoft.CSharp.targets en lugar de Microsoft.WebApplication.targets
-    para que compile correctamente con solo MSBuild / .NET Framework,
-    sin necesidad de Visual Studio instalado.
-    IIS compila los .aspx en tiempo de ejecucion (compilacion dinamica).
-  -->
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -20,14 +12,11 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <RootNamespace>InstanaTestApp</RootNamespace>
     <AssemblyName>InstanaTestApp</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <!-- OutputPath fijo: evita el error MSB5023 cuando se compila sin .sln -->
+    <OutputPath>bin\</OutputPath>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
@@ -48,7 +37,7 @@
     <Compile Include="call.aspx.cs" />
   </ItemGroup>
 
-  <!-- Contenido estatico: se copian tal cual al publicar -->
+  <!-- Contenido estatico: IIS compila los .aspx en tiempo de ejecucion -->
   <ItemGroup>
     <Content Include="web.config" />
     <Content Include="Global.asax" />
@@ -56,5 +45,11 @@
     <Content Include="health.aspx" />
     <Content Include="call.aspx" />
   </ItemGroup>
+
+  <!--
+    Import al final: garantiza que Configuration/Platform/OutputPath
+    ya esten definidos cuando CSharp.targets los necesite.
+  -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
 </Project>
