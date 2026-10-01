@@ -5,11 +5,8 @@ using System.Web.UI;
 
 namespace InstanaTestApp
 {
-    public class DefaultPage : Page
+    public partial class DefaultPage : Page
     {
-        protected System.Web.UI.WebControls.Repeater rptEnv;
-        protected System.Web.UI.WebControls.Label lblAppName;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             lblAppName.Text = ConfigurationManager.AppSettings["AppName"] ?? "InstanaTestApp";
